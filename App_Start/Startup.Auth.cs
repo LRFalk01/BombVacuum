@@ -1,10 +1,12 @@
 ﻿using System;
+using BombVacuum.Entity.Services;
 using BombVacuum.Models;
 using BombVacuum.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.DataProtection;
+using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 
@@ -67,11 +69,12 @@ namespace BombVacuum
             //    appId: "",
             //    appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            if (SettingsService.Instance.GoogleOauth)
+                app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+                {
+                    ClientId = SettingsService.Instance.GoogleOauthId,
+                    ClientSecret = SettingsService.Instance.GoogleOauthSecret
+                });
         }
     }
 }

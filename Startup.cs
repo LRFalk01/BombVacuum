@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Web.Http;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.OAuth;
+﻿using Microsoft.Owin;
 using Owin;
 
 

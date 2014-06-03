@@ -10,6 +10,7 @@ namespace BombVacuum.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            CodeGenerator = new MySql.Data.Entity.MySqlMigrationCodeGenerator();
         }
 
         protected override void Seed(BombVacuum.Models.ApplicationDbContext context)

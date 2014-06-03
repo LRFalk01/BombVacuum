@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BombVacuum.DatabaseHelpers;
+using BombVacuum.Entity.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -40,5 +41,7 @@ namespace BombVacuum.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<AppSetting> AppSettings { get; set; }
     }
 }
