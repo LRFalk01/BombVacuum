@@ -117,7 +117,6 @@
     <Compile Include="DatabaseHelpers\MySqlConfiguration.cs" />
     <Compile Include="DatabaseHelpers\MySqlHistoryContext.cs" />
     <Compile Include="DatabaseHelpers\MySqlInitializer.cs" />
-    <Compile Include="Entity\BombVaccumContext.cs" />
     <Compile Include="Entity\Models\AppSetting.cs" />
     <Compile Include="Entity\Services\AppSettingsService.cs" />
     <Compile Include="Migrations\201405310545293_Init.cs" />
@@ -147,6 +146,41 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="assets\lib\bootstrap-3.1.1\css\bootstrap-theme.css.map" />
+    <None Include="assets\lib\bootstrap-3.1.1\css\bootstrap.css.map" />
+    <None Include="assets\lib\bootstrap-3.1.1\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="assets\lib\bootstrap-3.1.1\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="assets\lib\bootstrap-3.1.1\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="assets\lib\font-awesome-4.0.3\fonts\fontawesome-webfont.eot" />
+    <None Include="assets\lib\font-awesome-4.0.3\fonts\fontawesome-webfont.ttf" />
+    <None Include="assets\lib\font-awesome-4.0.3\fonts\fontawesome-webfont.woff" />
+    <None Include="assets\lib\font-awesome-4.0.3\fonts\FontAwesome.otf" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\bordered-pulled.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\core.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\fixed-width.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\font-awesome.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\icons.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\larger.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\list.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\mixins.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\path.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\rotated-flipped.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\spinning.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\stacked.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\less\variables.less" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\font-awesome.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_bordered-pulled.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_core.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_fixed-width.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_icons.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_larger.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_list.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_mixins.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_path.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_rotated-flipped.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_spinning.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_stacked.scss" />
+    <None Include="assets\lib\font-awesome-4.0.3\scss\_variables.scss" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -157,7 +191,44 @@
       <DependentUpon>201406022351363_AppSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="assets\app\app.js" />
+    <Content Include="assets\app\core\services\DebounceService.js" />
+    <Content Include="assets\app\core\services\HttpRequestService.js" />
+    <Content Include="assets\app\root\layout.html" />
+    <Content Include="assets\index.html" />
+    <Content Include="assets\lib\angular-1.2.16\angular-route.min.js" />
+    <Content Include="assets\lib\angular-1.2.16\angular.min.js" />
+    <Content Include="assets\lib\angular-busy\angular-busy.css" />
+    <Content Include="assets\lib\angular-busy\angular-busy.js" />
+    <Content Include="assets\lib\angular-busy\angular-busy.min.css" />
+    <Content Include="assets\lib\angular-busy\angular-busy.min.js" />
+    <Content Include="assets\lib\angular-busy\dl-angular-busy.css" />
+    <Content Include="assets\lib\angular-busy\loading.gif" />
+    <Content Include="assets\lib\angular-busy\overlay.png" />
+    <Content Include="assets\lib\angular-ui-bootstrap-0.10.0\ui-bootstrap-0.10.0.min.js" />
+    <Content Include="assets\lib\angular-ui-router-0.2.10\angular-ui-router.min.js" />
+    <Content Include="assets\lib\angular-ui-utils-0.1.1\ui-utils-ieshiv.js" />
+    <Content Include="assets\lib\angular-ui-utils-0.1.1\ui-utils-ieshiv.min.js" />
+    <Content Include="assets\lib\angular-ui-utils-0.1.1\ui-utils.js" />
+    <Content Include="assets\lib\angular-ui-utils-0.1.1\ui-utils.min.js" />
+    <Content Include="assets\lib\bootstrap-3.1.1\css\bootstrap-theme.css" />
+    <Content Include="assets\lib\bootstrap-3.1.1\css\bootstrap-theme.min.css" />
+    <Content Include="assets\lib\bootstrap-3.1.1\css\bootstrap.css" />
+    <Content Include="assets\lib\bootstrap-3.1.1\css\bootstrap.min.css" />
+    <Content Include="assets\lib\bootstrap-3.1.1\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="assets\lib\bootstrap-3.1.1\js\bootstrap.js" />
+    <Content Include="assets\lib\bootstrap-3.1.1\js\bootstrap.min.js" />
+    <Content Include="assets\lib\font-awesome-4.0.3\css\font-awesome.css" />
+    <Content Include="assets\lib\font-awesome-4.0.3\css\font-awesome.min.css" />
+    <Content Include="assets\lib\font-awesome-4.0.3\fonts\fontawesome-webfont.svg" />
+    <Content Include="assets\lib\moment-2.5.1\moment.min.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>XCOPY "$(ProjectDir)Assets" "$(TargetDir)/assets" /E /I /F /Y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
