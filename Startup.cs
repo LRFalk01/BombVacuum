@@ -1,4 +1,6 @@
 ﻿using Microsoft.Owin;
+using Microsoft.Owin.FileSystems;
+using Microsoft.Owin.StaticFiles;
 using Owin;
 
 
@@ -9,6 +11,11 @@ namespace BombVacuum
     {
         public void Configuration(IAppBuilder app)
         {
+            #if DEBUG
+            var options = new StaticFileOptions {FileSystem = new PhysicalFileSystem("./")};
+            app.UseStaticFiles(options);
+            #endif
+            
             // Configure auth
             ConfigureAuth(app);
 

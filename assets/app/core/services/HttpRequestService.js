@@ -2,7 +2,7 @@
 
 //service to wrap the standard usage of $http within services
 //wraps the request in a $q promise
-cbApp.factory('HttpRequestService', function ($http, $log, $q) {
+cbApp.factory('HttpRequestService', ['$http', '$log', '$q', function ($http, $log, $q) {
     return {
         Go: function (httpOptions) {
             var deferred = $q.defer();
@@ -17,4 +17,4 @@ cbApp.factory('HttpRequestService', function ($http, $log, $q) {
             return deferred.promise;
         }
     };
-});
+}]);
