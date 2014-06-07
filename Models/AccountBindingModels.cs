@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BombVacuum.Models
 {
@@ -66,6 +67,23 @@ namespace BombVacuum.Models
         public string ProviderKey { get; set; }
     }
 
+
+    public class LoginViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
+    }
+
     public class SetPasswordBindingModel
     {
         [Required]
@@ -78,5 +96,12 @@ namespace BombVacuum.Models
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class CurrentUser
+    {
+        public bool IsAuthenticated { get; set; }
+        public string UserName { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

@@ -340,7 +340,43 @@ namespace BombVacuum.WebApi.Controllers
             return Ok();
         }
 
-        // POST api/Account/RegisterExternal
+        // POST: /Account/Login
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> PostLogin(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindAsync(model.Email, model.Password);
+                if (user != null)
+                {
+                    Authentication.SignIn(new AuthenticationProperties() { IsPersistent = model.RememberMe }, await user.GenerateUserIdentityAsync(UserManager, DefaultAuthenticationTypes.ApplicationCookie));
+                    return Ok();
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid username or password.");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return BadRequest();
+        }
+
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> GetCurrentUser()
+        {
+            if (User == null || !User.Identity.IsAuthenticated)
+                return Ok(new CurrentUser {IsAuthenticated = false});
+
+            return Ok(new CurrentUser
+            {
+                IsAuthenticated = true,
+                UserName = User.Identity.Name
+            });
+        }
+
+            // POST api/Account/RegisterExternal
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("RegisterExternal")]

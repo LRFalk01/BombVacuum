@@ -3,7 +3,9 @@ using BombVacuum.Entity.Services;
 using BombVacuum.Models;
 using BombVacuum.Providers;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.Google;
@@ -39,19 +41,33 @@ namespace BombVacuum
             //            new AesDataProtectorProvider("testing"), TextEncodings.Base64)
             //});
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-
-            // Configure the application for OAuth based flow
-            PublicClientId = "self";
-            OAuthOptions = new OAuthAuthorizationServerOptions
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-                AllowInsecureHttp = true
-            };
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                CookieName = "BombvacAuth",
+                AuthenticationMode = AuthenticationMode.Passive,
+                Provider = new CookieAuthenticationProvider
+                {
+                    OnValidateIdentity =
+                        SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
+                            validateInterval: TimeSpan.FromMinutes(5),
+                            regenerateIdentity:
+                                (manager, user) =>
+                                    user.GenerateUserIdentityAsync(manager, DefaultAuthenticationTypes.ApplicationCookie))
+                }
+            });
+            //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+
+            //// Configure the application for OAuth based flow
+            //PublicClientId = "self";
+            //OAuthOptions = new OAuthAuthorizationServerOptions
+            //{
+            //    TokenEndpointPath = new PathString("/Token"),
+            //    Provider = new ApplicationOAuthProvider(PublicClientId),
+            //    AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+            //    AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+            //    AllowInsecureHttp = true
+            //};
 
             //// Enable the application to use bearer tokens to authenticate users
             //app.UseOAuthBearerTokens(OAuthOptions);
@@ -69,12 +85,12 @@ namespace BombVacuum
             //    appId: "",
             //    appSecret: "");
 
-            if (SettingsService.Instance.GoogleOauth)
-                app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-                {
-                    ClientId = SettingsService.Instance.GoogleOauthId,
-                    ClientSecret = SettingsService.Instance.GoogleOauthSecret
-                });
+            //if (SettingsService.Instance.GoogleOauth)
+            //    app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //    {
+            //        ClientId = SettingsService.Instance.GoogleOauthId,
+            //        ClientSecret = SettingsService.Instance.GoogleOauthSecret
+            //    });
         }
     }
 }

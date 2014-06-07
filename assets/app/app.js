@@ -4,24 +4,33 @@
 // Declare app level module which depends on filters, and services
 var cbApp = angular.module('cbApp', ['ui.router', 'ui.validate', 'cgBusy'])
     .config(['$urlRouterProvider', '$stateProvider', '$locationProvider', function ($urlRouterProvider, $stateProvider, $locationProvider) {
-        $locationProvider.html5Mode(true);
+        $locationProvider.html5Mode(false);
 
         $urlRouterProvider.otherwise('/');
 
         var routes = new Array();
         routes.push({
-            name: 'root',
+            name: 'base',
             url: '/',
-            //controller: 'RootController',
-            templateUrl: '/assets/app/root/layout.html',
-            permission: null
+            controller: 'BaseController',
+            templateUrl: '/assets/app/base/layout.html',
+            permission: null,
+            resolve: {
+                CurrentUserService: [
+                    'CurrentUserService', function(currentUserService) {
+                        return currentUserService.GetCurrentUser().then(function() {
+                            return currentUserService;
+                        });
+                    }
+                ]
+            }
         });
         routes.push({
-            name: 'test',
-            parent: 'root',
-            url: 'testurl',
-            //controller: 'AccountSettingsController',
-            template: 'Test Child Route',
+            name: 'login',
+            parent: 'base',
+            url: 'login',
+            controller: 'LoginController',
+            templateUrl: '/assets/app/account/login.html',
             permission: null
         });
 
