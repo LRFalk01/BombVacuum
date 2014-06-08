@@ -252,9 +252,6 @@
     <Content Include="assets\lib\font-awesome-4.0.3\css\font-awesome.min.css" />
     <Content Include="assets\lib\font-awesome-4.0.3\fonts\fontawesome-webfont.svg" />
     <Content Include="assets\lib\moment-2.5.1\moment.min.js" />
-    <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.6.4.js" />
-    <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="assets\lib\jquery.signalR-2.0.3\jquery.signalR-2.0.3.js" />
     <Content Include="assets\lib\jquery.signalR-2.0.3\jquery.signalR-2.0.3.min.js" />
   </ItemGroup>
