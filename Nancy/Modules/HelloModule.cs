@@ -6,9 +6,9 @@ namespace BombVacuum.Nancy.Modules
     {
         public HelloModule()
         {
-            Get["/"] = parameters => Response.AsFile("./assets/index.html", "text/html");
+            Get["/"] = parameters => Response.AsFile("./index.html", "text/html");
 
-            Get["/{url*}"] = parameters => Response.AsFile("./assets/index.html", "text/html");
+            //Get["/{url*}"] = parameters => Response.AsFile("./assets/index.html", "text/html");
         }
     }
 }

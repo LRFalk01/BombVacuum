@@ -21,7 +21,7 @@ cbApp.factory('CurrentUserService', function ($log, HttpRequestService) {
             self.State.CurrentUser = null;
             self.State.Roles = [];
             if (self.State.IsAuthenticated) {
-                self.State.CurrentUser = data.CurrentUser;
+                self.State.CurrentUser = data;
                 self.State.Roles = data.Roles;
             }
         });

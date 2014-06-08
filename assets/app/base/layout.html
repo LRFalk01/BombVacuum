@@ -1,2 +1,6 @@
 ﻿Hello World - From AngularJS!
+<br/>
+<div ng-if="CurrentUser.IsAuthenticated">Logged in as: {{CurrentUser.UserName}}</div>
+<div ng-if="!CurrentUser.IsAuthenticated"><a ui-sref="register">Register</a></div>
+<br/>
 <div ui-view></div>

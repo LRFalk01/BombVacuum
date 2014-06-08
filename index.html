@@ -16,6 +16,8 @@
     <div ui-view></div>
     
     <!-- build:js /assets/mini/js/lib.js -->
+    <script src="assets/lib/jquery-2.1.1/jquery-2.1.1.min.js"></script>
+    <script src="assets/lib/jquery.signalR-2.0.3/jquery.signalR-2.0.3.min.js"></script>
     <script src="assets/lib/angular-1.2.16/angular.min.js"></script>
     <script src="assets/lib/angular-ui-router-0.2.10/angular-ui-router.min.js"></script>
     <script src="assets/lib/angular-ui-utils-0.1.1/ui-utils.min.js"></script>
@@ -35,11 +37,12 @@
     
     <!--account-->
     <script src="assets/app/account/LoginController.js"></script>
+    <script src="assets/app/account/RegisterController.js"></script>
     <!-- endbuild -->
 
     <!-- root -->
     <!--<script src="app/root/RootController.js"></script>
     <script src="app/root/RootService.js"></script>-->
-
+    <script src="signalr/hubs"></script>
 </body>
 </html>

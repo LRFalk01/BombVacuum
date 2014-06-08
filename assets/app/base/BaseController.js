@@ -9,7 +9,7 @@ cbApp.controller('BaseController', ['$scope', '$log', '$state', 'CurrentUserServ
         $scope.CurrentUser = currentUserService.State.CurrentUser;
 
         $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            if (toState.name != 'login' && !currentUserService.State.IsAuthenticated) {
+            if (!(toState.name == 'login' || toState.name == 'register') && !currentUserService.State.IsAuthenticated) {
                 event.preventDefault();
                 $state.go('login');
                 return;

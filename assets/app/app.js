@@ -33,6 +33,14 @@ var cbApp = angular.module('cbApp', ['ui.router', 'ui.validate', 'cgBusy'])
             templateUrl: '/assets/app/account/login.html',
             permission: null
         });
+        routes.push({
+            name: 'register',
+            parent: 'base',
+            url: 'register',
+            controller: 'RegisterController',
+            templateUrl: '/assets/app/account/register.html',
+            permission: null
+        });
 
         for (var route in routes) {
             $stateProvider.state(routes[route]);

@@ -12,9 +12,11 @@ namespace BombVacuum
         public void Configuration(IAppBuilder app)
         {
             #if DEBUG
-            var options = new StaticFileOptions {FileSystem = new PhysicalFileSystem("./")};
+            var options = new StaticFileOptions {FileSystem = new PhysicalFileSystem("../../")};
             app.UseStaticFiles(options);
             #endif
+
+            app.MapSignalR();
             
             // Configure auth
             ConfigureAuth(app);

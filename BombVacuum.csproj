@@ -49,6 +49,12 @@
     <Reference Include="Microsoft.AspNet.Identity.Owin">
       <HintPath>packages\Microsoft.AspNet.Identity.Owin.2.0.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core">
+      <HintPath>packages\Microsoft.AspNet.SignalR.Core.2.0.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb">
+      <HintPath>packages\Microsoft.AspNet.SignalR.SystemWeb.2.0.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Owin">
       <HintPath>packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
@@ -57,6 +63,9 @@
     </Reference>
     <Reference Include="Microsoft.Owin.Host.HttpListener">
       <HintPath>packages\Microsoft.Owin.Host.HttpListener.2.1.0\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>packages\Microsoft.Owin.Host.SystemWeb.2.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Hosting">
       <HintPath>packages\Microsoft.Owin.Hosting.2.1.0\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
@@ -88,8 +97,9 @@
     <Reference Include="Nancy.Owin">
       <HintPath>packages\Nancy.Owin.0.23.0\lib\net40\Nancy.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Newtonsoft.Json.5.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin">
       <HintPath>packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -201,6 +211,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="assets\app\account\register.html" />
+    <Content Include="assets\app\account\RegisterController.js" />
     <Content Include="assets\app\account\LoginController.js" />
     <Content Include="assets\app\account\login.html" />
     <Content Include="assets\app\app.js" />
@@ -209,6 +221,7 @@
     <Content Include="assets\app\core\services\DebounceService.js" />
     <Content Include="assets\app\core\services\HttpRequestService.js" />
     <Content Include="assets\app\base\layout.html" />
+    <Content Include="assets\lib\jquery-2.1.1\jquery-2.1.1.min.js" />
     <Content Include="gulpfile.js" />
     <Content Include="index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -239,12 +252,16 @@
     <Content Include="assets\lib\font-awesome-4.0.3\css\font-awesome.min.css" />
     <Content Include="assets\lib\font-awesome-4.0.3\fonts\fontawesome-webfont.svg" />
     <Content Include="assets\lib\moment-2.5.1\moment.min.js" />
+    <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.4.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="assets\lib\jquery.signalR-2.0.3\jquery.signalR-2.0.3.js" />
+    <Content Include="assets\lib\jquery.signalR-2.0.3\jquery.signalR-2.0.3.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(ProjectDir)Assets" "$(TargetDir)/assets" /E /I /F /Y
-if $(ConfigurationName) == Release "C:\Program Files\nodejs\node.exe" "$(ProjectDir)node_modules\gulp\bin\gulp.js" --gulpfile "$(ProjectDir)gulpfile.js" --cwd "$(SolutionDir)\"
-if $(ConfigurationName) == Debug COPY "$(ProjectDir)index.html" "$(TargetDir)/assets/index.html"</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release XCOPY "$(ProjectDir)Assets" "$(TargetDir)/assets" /E /I /F /Y
+if $(ConfigurationName) == Release "C:\Program Files\nodejs\node.exe" "$(ProjectDir)node_modules\gulp\bin\gulp.js" --gulpfile "$(ProjectDir)gulpfile.js" --cwd "$(SolutionDir)\"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
