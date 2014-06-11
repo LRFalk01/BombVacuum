@@ -10,11 +10,11 @@ gulp.task('default', function(){
 });
 
 gulp.task('usemin', function() {
-    gulp.src('./bin/Release/*.html')
+    gulp.src('./*.html')
         .pipe(usemin({
-            css: [minifyCss(), 'concat', rev()],
+            css: [minifyCss(), 'concat'],
             //html: [minifyHtml({ empty: true, comments: true })],
-            js: [uglify(), rev()]
+            js: [uglify()]
         }))
         .pipe(gulp.dest('./bin/Release'));
 });

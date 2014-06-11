@@ -7,7 +7,12 @@ namespace BombVacuum
     {
         static void Main(string[] args)
         {
+            #if DEBUG
             var url = "http://+:8888";
+            #endif
+            #if !DEBUG
+            var url = "https://*:443";
+            #endif
 
             using (WebApp.Start<Startup>(url))
             {

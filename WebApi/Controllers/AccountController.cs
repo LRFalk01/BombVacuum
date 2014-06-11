@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -350,7 +351,33 @@ namespace BombVacuum.WebApi.Controllers
                 var user = await UserManager.FindAsync(model.Email, model.Password);
                 if (user != null)
                 {
-                    Authentication.SignIn(new AuthenticationProperties() { IsPersistent = model.RememberMe }, await user.GenerateUserIdentityAsync(UserManager, DefaultAuthenticationTypes.ApplicationCookie));
+                    var userIdentity =
+                        await user.GenerateUserIdentityAsync(UserManager, DefaultAuthenticationTypes.ApplicationCookie);
+                    //return Ok(new
+                    //{
+                    //    userIdentity.Actor,
+                    //    userIdentity.AuthenticationType,
+                    //    userIdentity.BootstrapContext,
+                    //    Claims =
+                    //        userIdentity.Claims.Select(
+                    //            c =>
+                    //                new
+                    //                {
+                    //                    c.Issuer,
+                    //                    c.OriginalIssuer,
+                    //                    c.Properties,
+                    //                    c.Subject,
+                    //                    c.Type,
+                    //                    c.Value,
+                    //                    c.ValueType
+                    //                }),
+                    //    userIdentity.IsAuthenticated,
+                    //    userIdentity.Label,
+                    //    userIdentity.Name,
+                    //    userIdentity.NameClaimType,
+                    //    userIdentity.RoleClaimType
+                    //});
+                    Authentication.SignIn(new AuthenticationProperties() { IsPersistent = model.RememberMe }, userIdentity);
                     return Ok();
                 }
                 else
@@ -360,7 +387,7 @@ namespace BombVacuum.WebApi.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return BadRequest();
+            return BadRequest("Something is wrong.");
         }
 
         [AllowAnonymous]

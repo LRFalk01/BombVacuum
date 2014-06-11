@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Microsoft.Owin.FileSystems;
+using Microsoft.Owin.Logging;
 using Microsoft.Owin.StaticFiles;
 using Owin;
 
@@ -11,8 +12,14 @@ namespace BombVacuum
     {
         public void Configuration(IAppBuilder app)
         {
+            app.UseErrorPage();
+
             #if DEBUG
             var options = new StaticFileOptions {FileSystem = new PhysicalFileSystem("../../")};
+            app.UseStaticFiles(options);
+            #endif
+            #if !DEBUG
+            var options = new StaticFileOptions {FileSystem = new PhysicalFileSystem("./")};
             app.UseStaticFiles(options);
             #endif
 
