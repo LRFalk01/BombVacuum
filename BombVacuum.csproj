@@ -170,6 +170,7 @@
     <Compile Include="DatabaseHelpers\MySqlInitializer.cs" />
     <Compile Include="Entity\Models\AppSetting.cs" />
     <Compile Include="Entity\Services\AppSettingsService.cs" />
+    <Compile Include="SignalR\Hubs\TestChat.cs" />
     <Compile Include="Migrations\201405310545293_Init.cs" />
     <Compile Include="Migrations\201405310545293_Init.Designer.cs">
       <DependentUpon>201405310545293_Init.cs</DependentUpon>
@@ -271,6 +272,8 @@
     <Content Include="assets\app\core\services\DebounceService.js" />
     <Content Include="assets\app\core\services\HttpRequestService.js" />
     <Content Include="assets\app\base\layout.html" />
+    <Content Include="assets\app\signalr\signalr.html" />
+    <Content Include="assets\app\signalr\SignalrController.js" />
     <Content Include="assets\lib\jquery-2.1.1\jquery-2.1.1.min.js" />
     <Content Include="gulpfile.js" />
     <Content Include="index.html">

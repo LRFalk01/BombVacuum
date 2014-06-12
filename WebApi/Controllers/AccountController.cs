@@ -353,30 +353,6 @@ namespace BombVacuum.WebApi.Controllers
                 {
                     var userIdentity =
                         await user.GenerateUserIdentityAsync(UserManager, DefaultAuthenticationTypes.ApplicationCookie);
-                    //return Ok(new
-                    //{
-                    //    userIdentity.Actor,
-                    //    userIdentity.AuthenticationType,
-                    //    userIdentity.BootstrapContext,
-                    //    Claims =
-                    //        userIdentity.Claims.Select(
-                    //            c =>
-                    //                new
-                    //                {
-                    //                    c.Issuer,
-                    //                    c.OriginalIssuer,
-                    //                    c.Properties,
-                    //                    c.Subject,
-                    //                    c.Type,
-                    //                    c.Value,
-                    //                    c.ValueType
-                    //                }),
-                    //    userIdentity.IsAuthenticated,
-                    //    userIdentity.Label,
-                    //    userIdentity.Name,
-                    //    userIdentity.NameClaimType,
-                    //    userIdentity.RoleClaimType
-                    //});
                     Authentication.SignIn(new AuthenticationProperties() { IsPersistent = model.RememberMe }, userIdentity);
                     return Ok();
                 }

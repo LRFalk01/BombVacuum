@@ -41,6 +41,14 @@ var cbApp = angular.module('cbApp', ['ui.router', 'ui.validate', 'cgBusy'])
             templateUrl: '/assets/app/account/register.html',
             permission: null
         });
+        routes.push({
+            name: 'signalr',
+            parent: 'base',
+            url: 'signalr',
+            controller: 'SignalrController',
+            templateUrl: '/assets/app/signalr/signalr.html',
+            permission: null
+        });
 
         for (var route in routes) {
             $stateProvider.state(routes[route]);

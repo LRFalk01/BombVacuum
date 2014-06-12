@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
 using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.StaticFiles;
@@ -12,8 +13,6 @@ namespace BombVacuum
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseErrorPage();
-
             #if DEBUG
             var options = new StaticFileOptions {FileSystem = new PhysicalFileSystem("../../")};
             app.UseStaticFiles(options);
@@ -22,17 +21,15 @@ namespace BombVacuum
             var options = new StaticFileOptions {FileSystem = new PhysicalFileSystem("./")};
             app.UseStaticFiles(options);
             #endif
-
-            app.MapSignalR();
             
             // Configure auth
             ConfigureAuth(app);
 
+            app.MapSignalR();
+
             ConfigureWebApi(app);
 
             app.UseNancy();
-
-            
         }
     }
 }
