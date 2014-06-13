@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Migrations.Model;
 using BombVacuum.Entity.Services;
 using BombVacuum.Models;
 using BombVacuum.Providers;
@@ -7,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.DataHandler;
 using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
@@ -20,12 +22,17 @@ namespace BombVacuum
 
         public static string PublicClientId { get; private set; }
 
+        public static string CookieType { get; private set; }
+        public static string CookieName { get; private set; }
+        
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context and user manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            CookieType = DefaultAuthenticationTypes.ApplicationCookie;
+            CookieName = "BombvacAuth";
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
@@ -40,11 +47,13 @@ namespace BombVacuum
             //            new AesDataProtectorProvider("testing"), TextEncodings.Base64)
             //});
 
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                CookieName = "BombvacAuth",
-                AuthenticationMode = AuthenticationMode.Passive,
+                AuthenticationType = CookieType,
+                CookieName = CookieName,
+                AuthenticationMode = AuthenticationMode.Active,
+                ReturnUrlParameter = null,
                 CookieHttpOnly = false,
                 Provider = new CookieAuthenticationProvider
                 {
@@ -53,7 +62,7 @@ namespace BombVacuum
                             validateInterval: TimeSpan.FromMinutes(5),
                             regenerateIdentity:
                                 (manager, user) =>
-                                    user.GenerateUserIdentityAsync(manager, DefaultAuthenticationTypes.ApplicationCookie))
+                                    user.GenerateUserIdentityAsync(manager, CookieType))
                 }
             });
             //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
