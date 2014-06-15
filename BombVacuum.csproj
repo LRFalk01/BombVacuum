@@ -170,6 +170,12 @@
     <Compile Include="DatabaseHelpers\MySqlInitializer.cs" />
     <Compile Include="Entity\Models\AppSetting.cs" />
     <Compile Include="Entity\Services\AppSettingsService.cs" />
+    <Compile Include="Models\Board.cs" />
+    <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\GameState.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\PlayerAction.cs" />
+    <Compile Include="Models\Square.cs" />
     <Compile Include="SignalR\Hubs\TestChat.cs" />
     <Compile Include="Migrations\201405310545293_Init.cs" />
     <Compile Include="Migrations\201405310545293_Init.Designer.cs">

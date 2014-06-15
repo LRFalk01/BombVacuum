@@ -5,7 +5,7 @@ namespace BombVacuum.SignalR.Hubs
 {
 
     [Authorize]
-    public class TestHub : Hub
+    public class GameHub : Hub
     {
         public void Hello()
         {
