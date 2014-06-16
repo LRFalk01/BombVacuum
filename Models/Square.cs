@@ -2,18 +2,24 @@
 {
     public class Square
     {
-        public byte Column { get; set; }
-        public byte Row { get; set; }
+        public Square(byte column, byte row)
+        {
+            Column = column;
+            Row = row;
+            Status = SquareStatus.Unknown;
+        }
+
+        public byte Column { get; private set; }
+        public byte Row { get; private set; }
         public SquareStatus Status { get; set; }
-        public bool IsBomb { get; set; }
-        public byte NeighboringBombs { get; set; }
+        public bool IsBomb { get; internal set; }
+        public int NeighboringBombs { get; internal set; }
     }
 
     public enum SquareStatus
     {
-        Unknown,
-        Flagged, 
-        Safe,
-        Bomb
+        Unknown = 0,
+        Flagged = 1,
+        Revealed = 2
     }
 }

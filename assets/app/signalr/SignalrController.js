@@ -6,7 +6,7 @@ cbApp.controller('SignalrController', ['$scope',
 
 
         self.Init = function () {
-            $scope.hub = $.connection.testHub;
+            $scope.hub = $.connection.gameHub;
             $scope.hub.client.hello = function(time) {
                 $scope.hubTime = time;
                 $scope.transport = $scope.hub.connection.transport.name;

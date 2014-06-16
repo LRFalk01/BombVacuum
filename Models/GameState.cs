@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Principal;
+using System.Text;
+using System.Threading.Tasks;
 using BombVacuum.SignalR.Hubs;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -25,7 +31,30 @@ namespace BombVacuum.Models
         private readonly ConcurrentDictionary<string, Game> _games =
             new ConcurrentDictionary<string, Game>(StringComparer.OrdinalIgnoreCase);
 
+        private readonly ApplicationUserManager _userManager =
+            new ApplicationUserManager(new UserStore<ApplicationUser>(ApplicationDbContext.Create()));
+
         public IHubConnectionContext Clients { get; set; }
         public IGroupManager Groups { get; set; }
+
+
+        public Player PlayerJoin(ApplicationUser user)
+        {
+            if (_players.ContainsKey(user.Id)) return _players[user.Id];
+            var player = new Player(user.UserName, GetMD5Hash(user.UserName));
+            _players[user.Id] = player;
+            return player;
+        }
+
+        public Player GetPlayer(string name)
+        {
+            return _players.Values.FirstOrDefault(p => p.Name == name);
+        }
+
+        private string GetMD5Hash(string userName)
+        {
+            return String.Join("",
+                MD5.Create().ComputeHash(Encoding.Default.GetBytes(userName)).Select(b => b.ToString("x2")));
+        }
     }
 }
