@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using BombVacuum.SignalR.Hubs;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -31,9 +27,6 @@ namespace BombVacuum.Models
         private readonly ConcurrentDictionary<string, Game> _games =
             new ConcurrentDictionary<string, Game>(StringComparer.OrdinalIgnoreCase);
 
-        private readonly ApplicationUserManager _userManager =
-            new ApplicationUserManager(new UserStore<ApplicationUser>(ApplicationDbContext.Create()));
-
         public IHubConnectionContext Clients { get; set; }
         public IGroupManager Groups { get; set; }
 
@@ -41,7 +34,7 @@ namespace BombVacuum.Models
         public Player PlayerJoin(ApplicationUser user)
         {
             if (_players.ContainsKey(user.Id)) return _players[user.Id];
-            var player = new Player(user.UserName, GetMD5Hash(user.UserName));
+            var player = new Player(user.UserName, user.Id);
             _players[user.Id] = player;
             return player;
         }
@@ -51,10 +44,60 @@ namespace BombVacuum.Models
             return _players.Values.FirstOrDefault(p => p.Name == name);
         }
 
-        private string GetMD5Hash(string userName)
+        public Player JoinGame(string userId, string gameId)
         {
-            return String.Join("",
-                MD5.Create().ComputeHash(Encoding.Default.GetBytes(userName)).Select(b => b.ToString("x2")));
+            if (!_games.ContainsKey(gameId) || !_players.ContainsKey(userId)) return null;
+            var game = _games[gameId];
+            var player = _players[userId];
+            if (!String.IsNullOrWhiteSpace(player.Group)) LeaveGame(userId, player.Group);
+            Groups.Add(player.ConnectionId, game.Id);
+            game.Players.Add(player);
+            player.Group = game.Id;
+            return player;
         }
+
+        public Player LeaveGame(string userId, string groupId)
+        {
+            if (!_players.ContainsKey(userId)) return null;
+            var player = _players[userId];
+            if (player.Group != groupId) return null;
+            Groups.Remove(player.ConnectionId, groupId);
+            player.Group = null;
+            return player;
+        }
+
+        public Game CreateGame(string userId)
+        {
+            if (!_players.ContainsKey(userId)) return null;
+            var player = _players[userId];
+            if (!String.IsNullOrWhiteSpace(player.Group)) LeaveGame(userId, player.Group);
+            var game = new Game(16, 16, 40);
+            player.Group = game.Id;
+            game.Players.Add(player);
+            Groups.Add(player.ConnectionId, game.Id);
+            _games[game.Id] = game;
+            return game;
+        }
+
+        public void DestroyGame(string gameId)
+        {
+            if (!_games.ContainsKey(gameId)) return;
+            var game = _games[gameId];
+            foreach (var player in game.Players)
+            {
+                LeaveGame(player.UserId, game.Id);
+            }
+            _games.TryRemove(gameId, out game);
+        }
+
+        public List<Square> RevealSquare(byte row, byte col, string userId)
+        {
+            if (!_players.ContainsKey(userId)) return null;
+            var player = _players[userId];
+            if (String.IsNullOrWhiteSpace(player.Group)) return null;
+            if (!_games.ContainsKey(player.Group)) return null;
+            var game = _games[player.Group];
+            return game.Click(row, col);
+        } 
     }
 }

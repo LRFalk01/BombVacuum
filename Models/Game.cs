@@ -11,12 +11,14 @@ namespace BombVacuum.Models
         {
             Board = new Board(rows, columns, bombs);
             Id = Guid.NewGuid().ToString("D");
+            Players = new List<Player>();
+            PlayerActions = new List<PlayerAction>();
         }
 
-        public List<Player> Players { get; set; }
+        public List<Player> Players { get; private set; }
         public Board Board { get; private set; }
         public string Id { get; private set; }
-        public List<PlayerAction> PlayerActions { get; set; }
+        public List<PlayerAction> PlayerActions { get; private set; }
 
 
         public List<Square> Click(byte row, byte column)
