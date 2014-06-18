@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using BombVacuum.SignalR.Hubs;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -31,12 +32,21 @@ namespace BombVacuum.Models
         public IGroupManager Groups { get; set; }
 
 
-        public Player PlayerJoin(ApplicationUser user)
+        public Player PlayerJoin(string userName, string userId)
         {
-            if (_players.ContainsKey(user.Id)) return _players[user.Id];
-            var player = new Player(user.UserName, user.Id);
-            _players[user.Id] = player;
+            if (_players.ContainsKey(userId)) return _players[userId];
+            var player = new Player(userName, userId);
+            _players[userId] = player;
             return player;
+        }
+
+        public bool PlayerLeave(string userId)
+        {
+            if (!_players.ContainsKey(userId)) return false;
+            var player = _players[userId];
+            if (!String.IsNullOrWhiteSpace(player.Group)) LeaveGame(userId, player.Group);
+            _players.TryRemove(userId, out player);
+            return true;
         }
 
         public Player GetPlayer(string name)
@@ -44,7 +54,7 @@ namespace BombVacuum.Models
             return _players.Values.FirstOrDefault(p => p.Name == name);
         }
 
-        public Player JoinGame(string userId, string gameId)
+        public Game JoinGame(string userId, string gameId)
         {
             if (!_games.ContainsKey(gameId) || !_players.ContainsKey(userId)) return null;
             var game = _games[gameId];
@@ -53,17 +63,25 @@ namespace BombVacuum.Models
             Groups.Add(player.ConnectionId, game.Id);
             game.Players.Add(player);
             player.Group = game.Id;
-            return player;
+
+            Clients.Group(game.Id).gamePlayers(game.Players.Select(p => p.Name));
+            return game;
         }
 
-        public Player LeaveGame(string userId, string groupId)
+        public Game LeaveGame(string userId, string groupId)
         {
             if (!_players.ContainsKey(userId)) return null;
             var player = _players[userId];
             if (player.Group != groupId) return null;
+
+            var game = _games[groupId];
+            game.Players.Remove(player);
             Groups.Remove(player.ConnectionId, groupId);
             player.Group = null;
-            return player;
+            if(!game.Players.Any()) DestroyGame(game.Id);
+
+            Clients.Group(game.Id).gamePlayers(game.Players.Select(p => p.Name));
+            return game;
         }
 
         public Game CreateGame(string userId)
@@ -76,8 +94,15 @@ namespace BombVacuum.Models
             game.Players.Add(player);
             Groups.Add(player.ConnectionId, game.Id);
             _games[game.Id] = game;
+            Clients.Group(game.Id).gamePlayers(game.Players.Select(p => p.Name));
+            Clients.All.updateGameList(_games.Values);
             return game;
         }
+
+        public ICollection<Game> CurrentGames()
+        {
+            return _games.Values;
+        } 
 
         public void DestroyGame(string gameId)
         {
@@ -88,6 +113,7 @@ namespace BombVacuum.Models
                 LeaveGame(player.UserId, game.Id);
             }
             _games.TryRemove(gameId, out game);
+            Clients.All.updateGameList(_games.Values);
         }
 
         public List<Square> RevealSquare(byte row, byte col, string userId)
