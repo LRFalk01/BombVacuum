@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BombVacuum.Models
+namespace BombVacuum.Models.Game
 {
     public class PlayerAction
     {

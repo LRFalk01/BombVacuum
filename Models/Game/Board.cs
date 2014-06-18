@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BombVacuum.Helpers;
 
-namespace BombVacuum.Models
+namespace BombVacuum.Models.Game
 {
     public class Board
     {
@@ -12,6 +12,7 @@ namespace BombVacuum.Models
             Rows = rows;
             Columns = columns;
             Bombs = bombs;
+            BuildSqures();
         }
 
         private bool _boardInit;
@@ -53,12 +54,10 @@ namespace BombVacuum.Models
                 SquareNeighbors(square).ForEach(s => RevealSquares(s.Row, s.Column, squares));
             }
             return squares;
-        } 
+        }
 
-        private void InitBoard(byte startCol, byte startRow)
+        private void BuildSqures()
         {
-            if (_boardInit) return;
-
             //build field
             Squares = new List<Square>();
             for (byte squareRow = 0; squareRow < Rows; squareRow++)
@@ -68,6 +67,12 @@ namespace BombVacuum.Models
                     Squares.Add(new Square(squareCol, squareRow));
                 }
             }
+        }
+
+        private void InitBoard(byte startCol, byte startRow)
+        {
+            if (_boardInit) return;
+            
             var numBombs = 0;
             while (numBombs < Bombs)
             {
@@ -82,7 +87,7 @@ namespace BombVacuum.Models
 
             Squares.AsParallel().ForAll(square =>
             {
-                square.NeighboringBombs = SquareNeighbors(square).Count(s => s.IsBomb);
+                square.NeighboringBombs = SquareNeighbors(square).Count(s => s.Bomb);
             });
             _boardInit = true;
         }

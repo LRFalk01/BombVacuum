@@ -1,9 +1,7 @@
-﻿﻿using System;
-﻿using System.Collections.Generic;
-﻿using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
-﻿using BombVacuum.Helpers;
+﻿using System;
+using System.Collections.Generic;
 
-namespace BombVacuum.Models
+namespace BombVacuum.Models.Game
 {
     public class Game
     {

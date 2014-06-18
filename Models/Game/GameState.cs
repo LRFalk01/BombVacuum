@@ -2,12 +2,12 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using BombVacuum.Models.DTO;
 using BombVacuum.SignalR.Hubs;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
-namespace BombVacuum.Models
+namespace BombVacuum.Models.Game
 {
     public sealed class GameState
     {
@@ -54,6 +54,12 @@ namespace BombVacuum.Models
             return _players.Values.FirstOrDefault(p => p.Name == name);
         }
 
+        public Game GetGame(string id)
+        {
+            if (!_games.ContainsKey(id)) return null;
+            return _games[id];
+        }
+
         public Game JoinGame(string userId, string gameId)
         {
             if (!_games.ContainsKey(gameId) || !_players.ContainsKey(userId)) return null;
@@ -64,7 +70,8 @@ namespace BombVacuum.Models
             game.Players.Add(player);
             player.Group = game.Id;
 
-            Clients.Group(game.Id).gamePlayers(game.Players.Select(p => p.Name));
+            Clients.Group(game.Id).gamePlayers(game.Players.ToDto());
+            Clients.Client(player.ConnectionId).initGameBoard(game.Board.ToDto());
             return game;
         }
 
@@ -80,7 +87,7 @@ namespace BombVacuum.Models
             player.Group = null;
             if(!game.Players.Any()) DestroyGame(game.Id);
 
-            Clients.Group(game.Id).gamePlayers(game.Players.Select(p => p.Name));
+            Clients.Group(game.Id).gamePlayers(game.Players.ToDto());
             return game;
         }
 
@@ -90,12 +97,9 @@ namespace BombVacuum.Models
             var player = _players[userId];
             if (!String.IsNullOrWhiteSpace(player.Group)) LeaveGame(userId, player.Group);
             var game = new Game(16, 16, 40);
-            player.Group = game.Id;
-            game.Players.Add(player);
-            Groups.Add(player.ConnectionId, game.Id);
             _games[game.Id] = game;
-            Clients.Group(game.Id).gamePlayers(game.Players.Select(p => p.Name));
-            Clients.All.updateGameList(_games.Values);
+            Clients.All.updateGameList(_games.Values.ToDto());
+            JoinGame(userId, game.Id);
             return game;
         }
 
@@ -113,7 +117,7 @@ namespace BombVacuum.Models
                 LeaveGame(player.UserId, game.Id);
             }
             _games.TryRemove(gameId, out game);
-            Clients.All.updateGameList(_games.Values);
+            Clients.All.updateGameList(_games.Values.ToDto());
         }
 
         public List<Square> RevealSquare(byte row, byte col, string userId)

@@ -42,11 +42,11 @@ var cbApp = angular.module('cbApp', ['ui.router', 'ui.validate', 'cgBusy'])
             permission: null
         });
         routes.push({
-            name: 'signalr',
+            name: 'game',
             parent: 'base',
-            url: 'signalr',
-            controller: 'SignalrController',
-            templateUrl: '/assets/app/signalr/signalr.html',
+            url: 'game',
+            controller: 'GameController',
+            templateUrl: '/assets/app/game/Game.html',
             permission: null
         });
 

@@ -1,4 +1,4 @@
-﻿namespace BombVacuum.Models
+﻿namespace BombVacuum.Models.Game
 {
     public class Square
     {
@@ -12,7 +12,18 @@
         public byte Column { get; private set; }
         public byte Row { get; private set; }
         public SquareStatus Status { get; set; }
-        public bool IsBomb { get; internal set; }
+
+        internal bool Bomb;
+        public bool? IsBomb
+        {
+            get
+            {
+                if (Status == SquareStatus.Unknown) return null;
+                return Bomb;
+            }
+            internal set { Bomb = value ?? false; }
+            
+        }
         public int NeighboringBombs { get; internal set; }
     }
 

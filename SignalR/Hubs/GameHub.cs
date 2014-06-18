@@ -1,7 +1,8 @@
 ﻿using System;
-using BombVacuum.Models;
+using System.Net.Http.Headers;
+using BombVacuum.Models.DTO;
+using BombVacuum.Models.Game;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.SignalR;
 
 namespace BombVacuum.SignalR.Hubs
@@ -25,20 +26,20 @@ namespace BombVacuum.SignalR.Hubs
         public void CurrentGames()
         {
             var games = GameState.Instance.CurrentGames();
-            Clients.Caller.currentGames(games);
+            Clients.Caller.currentGames(games.ToDto());
         }
 
         public void JoinGame(string gameId)
         {
             if (String.IsNullOrEmpty(gameId)) return;
             var game = GameState.Instance.JoinGame(Context.User.Identity.GetUserId(), gameId);
-            Clients.Caller.joinGame(game);
+            Clients.Caller.joinGame(game.ToDto());
         }
 
         public void CreateGame()
         {
             var game = GameState.Instance.CreateGame(Context.User.Identity.GetUserId());
-            Clients.Caller.createGame(game);
+            Clients.Caller.createGame(game.ToDto());
         }
 
         public void LeaveGame()
@@ -47,12 +48,21 @@ namespace BombVacuum.SignalR.Hubs
             GameState.Instance.LeaveGame(player.UserId, player.Group);
         }
 
+        public void InitGameBoard()
+        {
+            var player = GameState.Instance.GetPlayer(Context.User.Identity.Name);
+            if (String.IsNullOrWhiteSpace(player.Group)) return;
+            var game = GameState.Instance.GetGame(player.Group);
+            if (game == null) return;
+            Clients.Caller.initGameBoard(game.Board.ToDto());
+        }
+
         public void Click(byte row, byte col)
         {
             var player = GameState.Instance.GetPlayer(Context.User.Identity.Name);
             if (String.IsNullOrWhiteSpace(player.Group)) return;
             var squares = GameState.Instance.RevealSquare(row, col, player.UserId);
-            Clients.Group(player.Group).reveal(squares);
+            Clients.Group(player.Group).reveal(squares.ToDto());
         }
     }
 }

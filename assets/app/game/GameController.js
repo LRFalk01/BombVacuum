@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-cbApp.controller('SignalrController', ['$scope',
+cbApp.controller('GameController', ['$scope',
     function SignalrController($scope) {
         var self = this;
         $scope.revaledSquares = [];
@@ -41,6 +41,11 @@ cbApp.controller('SignalrController', ['$scope',
 
             $scope.hub.client.reveal = function (squares) {
                 $scope.revaledSquares.push(squares);
+                $scope.$apply();
+            };
+
+            $scope.hub.client.initGameBoard = function (board) {
+                $scope.gameBoard = board;
                 $scope.$apply();
             };
 
