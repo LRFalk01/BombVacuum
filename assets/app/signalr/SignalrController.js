@@ -3,9 +3,13 @@
 cbApp.controller('SignalrController', ['$scope',
     function SignalrController($scope) {
         var self = this;
-
+        $scope.revaledSquares = [];
         $scope.CreateGame = function() {
             $scope.hub.server.createGame();
+        };
+
+        $scope.Click = function() {
+            $scope.hub.server.click($scope.row, $scope.col);
         };
 
 
@@ -34,6 +38,13 @@ cbApp.controller('SignalrController', ['$scope',
                 $scope.currentGames = games;
                 $scope.$apply();
             };
+
+            $scope.hub.client.reveal = function (squares) {
+                $scope.revaledSquares.push(squares);
+                $scope.$apply();
+            };
+
+            
 
             $.connection.hub.start().done(function() {
                 $scope.hub.server.joinServer();

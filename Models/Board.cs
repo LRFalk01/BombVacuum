@@ -37,21 +37,22 @@ namespace BombVacuum.Models
             lock (Squares)
             {
                 if (square.Status != SquareStatus.Unknown) return null;
-                return RevealSquares(row, column);
+                return RevealSquares(row, column, null);
             }
         }
 
-        private List<Square> RevealSquares(byte row, byte column)
+        private List<Square> RevealSquares(byte row, byte column, List<Square> squares)
         {
-            var squaresRevealed = new List<Square>();
+            if(squares == null) squares = new List<Square>();
             var square = Squares.First(s => s.Row == row && s.Column == column);
-            if (square.Status != SquareStatus.Unknown) return squaresRevealed;
-            squaresRevealed.Add(square);
+            if (square.Status != SquareStatus.Unknown) return squares;
+            square.Status = SquareStatus.Revealed;
+            squares.Add(square);
             if (square.NeighboringBombs == 0)
             {
-                SquareNeighbors(square).ForEach(s => squaresRevealed.AddRange(RevealSquares(s.Row, s.Column)));
+                SquareNeighbors(square).ForEach(s => RevealSquares(s.Row, s.Column, squares));
             }
-            return squaresRevealed;
+            return squares;
         } 
 
         private void InitBoard(byte startCol, byte startRow)
@@ -64,7 +65,7 @@ namespace BombVacuum.Models
             {
                 for (byte squareCol = 0; squareCol < Columns; squareCol++)
                 {
-                    Squares.Add(new Square(squareCol, startRow));
+                    Squares.Add(new Square(squareCol, squareRow));
                 }
             }
             var numBombs = 0;
