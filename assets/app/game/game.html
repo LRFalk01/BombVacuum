@@ -1,8 +1,15 @@
-﻿<button ng-click="CreateGame()">CreateGame</button><br />
+﻿
+<table>
+    <tr ng-repeat="row in Range(gameBoard.Rows)  track by $index">
+        <td ng-repeat="col in Range(gameBoard.Columns)  track by $index">
+            <div style="width: 16px; height: 16px;" ng-click="Click($parent.$index, $index)">{{SquareStatus($parent.$index, $index)}}</div>
+        </td>
+    </tr>
+</table>
+<button ng-click="CreateGame()">CreateGame</button><br />
 Game: {{currentGame | json}}<br />
 Games: {{currentGames | json}}<br />
 Players: {{gamePlayers | json}}<br />
-Revaled Squares: {{revaledSquares | json}}<br />
 <br />
 Row: <input ng-model="row" /> Col: <input ng-model="col" />
 <button ng-click="Click()">Click</button><br />

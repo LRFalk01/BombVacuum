@@ -34,7 +34,8 @@ namespace BombVacuum.Models.Game
                     if (!_boardInit) InitBoard(column, row);
                 }   
             }
-            var square = Squares.First(s => s.Row == row && s.Column == column);
+            var square = Squares.FirstOrDefault(s => s.Row == row && s.Column == column);
+            if(square == null) return new List<Square>();
             lock (Squares)
             {
                 if (square.Status != SquareStatus.Unknown) return null;
