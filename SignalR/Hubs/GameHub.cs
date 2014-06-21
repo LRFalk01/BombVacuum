@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using BombVacuum.Models.DTO;
 using BombVacuum.Models.Game;
 using Microsoft.AspNet.Identity;
@@ -63,6 +64,12 @@ namespace BombVacuum.SignalR.Hubs
             if (String.IsNullOrWhiteSpace(player.Group)) return;
             var squares = GameState.Instance.RevealSquare(row, col, player.UserId);
             Clients.Group(player.Group).reveal(squares.ToDto());
+        }
+
+        public override Task OnDisconnected()
+        {
+            GameState.Instance.PlayerLeave(Context.User.Identity.GetUserId());
+            return base.OnDisconnected();
         }
     }
 }
