@@ -48,6 +48,10 @@ cbApp.factory('CurrentUserService', ['$log', 'HttpRequestService', function($log
                     method: "POST",
                     url: '/API/Account/Logout',
                     withCredentials: true
+                })
+                .then(function() {
+                    self.State.CurrentUser = null;
+                    self.State.IsAuthenticated = false;
                 });
             }
         };

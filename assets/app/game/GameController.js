@@ -82,8 +82,6 @@ cbApp.controller('GameController', ['$scope',
                 $scope.$apply();
             };
 
-            
-
             $.connection.hub.start().done(function() {
                 $scope.hub.server.joinServer();
             });

@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-var cbApp = angular.module('cbApp', ['ui.router', 'ui.validate', 'cgBusy'])
+var cbApp = angular.module('cbApp', ['ui.router', 'ui.validate', 'cgBusy', 'ui.bootstrap'])
     .config(['$urlRouterProvider', '$stateProvider', '$locationProvider', function ($urlRouterProvider, $stateProvider, $locationProvider) {
         $locationProvider.html5Mode(false);
 

@@ -4,6 +4,7 @@ cbApp.controller('BaseController', ['$scope', '$log', '$state', 'CurrentUserServ
     function BaseController($scope, $log, $state, currentUserService) {
         var self = this;
         $scope.CurrentUserService = currentUserService;
+        $scope.state = $state;
 
         $scope.IsAuthenticated = currentUserService.State.IsAuthenticated;
         $scope.CurrentUser = currentUserService.State.CurrentUser;

@@ -71,7 +71,7 @@ namespace BombVacuum.WebApi.Controllers
         [Route("Logout")]
         public IHttpActionResult Logout()
         {
-            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+            Authentication.SignOut(Startup.CookieType);
             return Ok();
         }
 

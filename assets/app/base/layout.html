@@ -1,6 +1,31 @@
-﻿Hello World - From AngularJS!
-<br/>
-<div ng-if="CurrentUser.IsAuthenticated">Logged in as: {{CurrentUser.UserName}}</div>
-<div ng-if="!CurrentUser.IsAuthenticated"><a ui-sref="register">Register</a></div>
-<br/>
-<div ui-view></div>
+﻿<section class="container">
+    <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex8-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Bomb Vacuum</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div collapse="navCollapsed" class="navbar-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+                <li ng-show="CurrentUser.IsAuthenticated" ng-class="{active: state.current.name == 'game'}"><a ui-sref="game">Game</a></li>
+            </ul>
+            <ul class="nav navbar-nav pull-right" dropdown>
+                <li ng-show="!CurrentUser.IsAuthenticated" ng-class="{active: state.current.name == 'login'}"><a ui-sref="login">Login</a></li>
+                <li ng-show="!CurrentUser.IsAuthenticated" ng-class="{active: state.current.name == 'register'}" class="divider-vertical"><a ui-sref="register">Register</a></li>
+                <li ng-show="CurrentUser.IsAuthenticated" class="divider-vertical">
+                    <a class="dropdown-toggle">{{CurrentUser.UserName}} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a ng-click="LogOff()">Log Off</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+    <div ui-view></div>
+</section>

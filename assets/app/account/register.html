@@ -1,6 +1,10 @@
-﻿<form novalidate name="registerForm" ng-submit="submitForm(registerForm)">
-    Email: <input type="email" required name="Email" ng-model="user.Email" /><br />
-    Password: <input type="password" required name="Password" ng-model="user.Password" /><br />
-    ConfirmPassword: <input type="password" required name="ConfirmPassword" ng-model="user.ConfirmPassword" /><br />
-    <input type="submit" />
+﻿<form class="form-signin" novalidate name="loginForm" ng-submit="submitForm(loginForm)">
+    <h2 class="form-signin-heading">Create an accout</h2>
+    <input type="email" class="form-control" required name="Email" ng-model="user.Email" placeholder="Email Address" />
+    <input type="password" class="form-control" required name="Password" ng-model="user.Password" placeholder="Password" style="margin-bottom: -1px;" />
+    <input type="password" class="form-control" required name="Password" ng-model="user.ConfirmPassword" placeholder="Confirm Password" />
+    <!--<label class="checkbox">
+        <input type="checkbox" ng-model="user.RememberMe"> Remember me
+    </label>-->
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 </form>
