@@ -49,10 +49,7 @@ namespace BombVacuum.Models.DTO
         public static BoardDTO ToDto(this Board board)
         {
             if (board == null) return null;
-            return new BoardDTO
-            {
-                Bombs = board.Bombs, Columns = board.Columns, Rows = board.Rows, Squares = board.Squares.ToDto()
-            };
+            return new BoardDTO(board.Squares);
         }
 
         public static List<BoardDTO> ToDto(this IEnumerable<Board> boards)

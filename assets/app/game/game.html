@@ -1,8 +1,8 @@
 ﻿
-<table>
-    <tr ng-repeat="row in Range(gameBoard.Rows)  track by $index">
-        <td ng-repeat="col in Range(gameBoard.Columns)  track by $index">
-            <div style="width: 16px; height: 16px;" ng-click="Click($parent.$index, $index)">{{SquareStatus($parent.$index, $index)}}</div>
+<table ng-if="gameBoard">
+    <tr ng-repeat="row in Range(gameBoard.Rows)  track by $index" ng-init="Row = $index">
+        <td ng-repeat="col in Range(gameBoard.Columns)  track by $index" ng-init="Col = $index">
+            <div style="width: 16px; height: 16px;" ng-click="Click(gameBoard.Squares[Row][Col])">{{SquareStatus(gameBoard.Squares[Row][Col])}}</div>
         </td>
     </tr>
 </table>

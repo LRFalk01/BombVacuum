@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-cbApp.controller('GameController', ['$scope',
-    function SignalrController($scope) {
+cbApp.controller('GameController', ['$scope', '$log',
+    function SignalrController($scope, $log) {
         var self = this;
         $scope.revaledSquares = [];
         $scope.CreateGame = function() {
@@ -12,12 +12,9 @@ cbApp.controller('GameController', ['$scope',
             return new Array(n);
         };
 
-        $scope.Click = function(row, col) {
-            var square = $scope.gameBoard.Squares.filter(function(data) {
-                return data.Row == row && data.Column == col;
-            });
-            if (square.length != 1) return;
-            $scope.hub.server.click(row, col);
+        $scope.Click = function (square) {
+            if (!square) return;
+            $scope.hub.server.click(square.Row, square.Column);
         };
 
         $scope.Square = function(row, col) {
@@ -29,8 +26,7 @@ cbApp.controller('GameController', ['$scope',
             return square[0];
         };
 
-        $scope.SquareStatus = function(row, col) {
-            var square = $scope.Square(row, col);
+        $scope.SquareStatus = function(square) {
             if (square.Status == undefined) return '';
             if (square.Status == 0) return '?';
             if (square.Bomb) return 'B';
@@ -67,9 +63,9 @@ cbApp.controller('GameController', ['$scope',
 
             $scope.hub.client.reveal = function (squares) {
                 if (!squares || !angular.isArray(squares)) return;
-
                 angular.forEach(squares, function(square) {
-                    var boardSquare = $scope.Square(square.Row, square.Column);
+                    var boardSquare = $scope.gameBoard.Squares[square.Row][square.Column];
+
                     boardSquare.Bomb = square.Bomb;
                     boardSquare.NeighboringBombs = square.NeighboringBombs;
                     boardSquare.Status = square.Status;
