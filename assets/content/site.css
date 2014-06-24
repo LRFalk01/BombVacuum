@@ -1,3 +1,12 @@
+.nohighlight {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .form-signin {
   max-width: 330px;
   padding: 15px;
@@ -31,4 +40,18 @@
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.gameBoard td {
+    border: 1px lightblue solid;
+    height: 25px;width: 25px;
+    text-align: center;
+}
+
+.gameBoard td div {
+    height: 25px;width: 25px;
+}
+
+.gameBoard td div.unknown {
+    border: 3px lightblue outset;
 }

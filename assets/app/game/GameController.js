@@ -1,11 +1,11 @@
 ﻿'use strict';
 
-cbApp.controller('GameController', ['$scope', '$log',
-    function SignalrController($scope, $log) {
+cbApp.controller('GameController', ['$scope', '$log', 'SignalRGameService', '$rootScope',
+    function SignalrController($scope, $log, SignalRGameService, $rootScope) {
         var self = this;
         $scope.revaledSquares = [];
         $scope.CreateGame = function() {
-            $scope.hub.server.createGame();
+            SignalRGameService.CreateGame();
         };
 
         $scope.Range = function (n) {
@@ -14,7 +14,7 @@ cbApp.controller('GameController', ['$scope', '$log',
 
         $scope.Click = function (square) {
             if (!square) return;
-            $scope.hub.server.click(square.Row, square.Column);
+            SignalRGameService.ClickSquare(square.Row, square.Column);
         };
 
         $scope.Square = function(row, col) {
@@ -36,32 +36,35 @@ cbApp.controller('GameController', ['$scope', '$log',
 
 
         self.Init = function () {
-            $scope.hub = $.connection.gameHub;
-            $scope.hub.client.gamePlayers = function (players) {
+            SignalRGameService.initialized.then(function() {
+                SignalRGameService.JoinServer();
+            });
+
+            $rootScope.$on('game.gamePlayers', function (e, players) {
                 $scope.gamePlayers = players;
                 $scope.$apply();
-            };
+            });
 
-            $scope.hub.client.currentGames = function (games) {
+            $rootScope.$on('game.currentGames', function (e, games) {
                 $scope.currentGames = games;
                 $scope.$apply();
-            };
+            });
 
-            $scope.hub.client.joinServer = function () {
-                $scope.hub.server.currentGames();
-            };
+            $rootScope.$on('game.joinServer', function () {
+                SignalRGameService.CurrentGames();
+            });
             
-            $scope.hub.client.createGame = function (game) {
+            $rootScope.$on('game.createGame', function (e, game) {
                 $scope.currentGame = game;
                 $scope.$apply();
-            };
+            });
             
-            $scope.hub.client.updateGameList = function (games) {
+            $rootScope.$on('game.updateGameList', function (e, games) {
                 $scope.currentGames = games;
                 $scope.$apply();
-            };
+            });
 
-            $scope.hub.client.reveal = function (squares) {
+            $rootScope.$on('game.reveal', function (e, squares) {
                 if (!squares || !angular.isArray(squares)) return;
                 angular.forEach(squares, function(square) {
                     var boardSquare = $scope.gameBoard.Squares[square.Row][square.Column];
@@ -71,15 +74,11 @@ cbApp.controller('GameController', ['$scope', '$log',
                     boardSquare.Status = square.Status;
                 });
                 $scope.$apply();
-            };
+            });
 
-            $scope.hub.client.initGameBoard = function (board) {
+            $rootScope.$on('game.initGameBoard', function (e, board) {
                 $scope.gameBoard = board;
                 $scope.$apply();
-            };
-
-            $.connection.hub.start().done(function() {
-                $scope.hub.server.joinServer();
             });
         };
         self.Init();

@@ -27,13 +27,8 @@ namespace BombVacuum.Models.Game
         public List<Square> Reveal(byte row, byte column)
         {
             //only allow one user to init the board
-            if (!_boardInit)
-            {
-                lock (_lock)
-                {
-                    if (!_boardInit) InitBoard(column, row);
-                }   
-            }
+            if (!_boardInit) InitBoard(column, row);
+             
             var square = Squares.FirstOrDefault(s => s.Row == row && s.Column == column);
             if(square == null) return new List<Square>();
             lock (Squares)
@@ -72,25 +67,28 @@ namespace BombVacuum.Models.Game
 
         private void InitBoard(byte startCol, byte startRow)
         {
-            if (_boardInit) return;
-            
-            var numBombs = 0;
-            while (numBombs < Bombs)
+            lock (_lock)
             {
-                var row = _random.Next(Rows - 1);
-                var col = _random.Next(Columns - 1);
+                if (_boardInit) return;
 
-                //bomb cannot be first clicked square
-                if(startRow == row && startCol == col) continue;
-                numBombs = numBombs + 1;
-                Squares.First(s => s.Row == row && s.Column == col).IsBomb = true;
+                var numBombs = 0;
+                while (numBombs < Bombs)
+                {
+                    var row = _random.Next(Rows - 1);
+                    var col = _random.Next(Columns - 1);
+
+                    //bomb cannot be first clicked square
+                    if (startRow == row && startCol == col) continue;
+                    numBombs = numBombs + 1;
+                    Squares.First(s => s.Row == row && s.Column == col).IsBomb = true;
+                }
+
+                Squares.AsParallel().ForAll(square =>
+                {
+                    square.NeighboringBombs = SquareNeighbors(square).Count(s => s.Bomb);
+                });
+                _boardInit = true;
             }
-
-            Squares.AsParallel().ForAll(square =>
-            {
-                square.NeighboringBombs = SquareNeighbors(square).Count(s => s.Bomb);
-            });
-            _boardInit = true;
         }
 
         private List<Square> SquareNeighbors(Square square)
