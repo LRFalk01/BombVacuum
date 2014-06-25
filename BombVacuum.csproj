@@ -306,7 +306,7 @@
     <Content Include="assets\app\base\BaseController.js" />
     <Content Include="assets\app\core\services\CurrentUserService.js" />
     <Content Include="assets\app\core\services\DebounceService.js" />
-    <Content Include="assets\app\core\services\SignalRGameService.js" />
+    <Content Include="assets\app\game\SignalRGameService.js" />
     <Content Include="assets\app\core\services\HttpRequestService.js" />
     <Content Include="assets\app\base\layout.html" />
     <Content Include="assets\app\game\game.html" />

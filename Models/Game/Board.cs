@@ -45,7 +45,7 @@ namespace BombVacuum.Models.Game
             if (square.Status != SquareStatus.Unknown) return squares;
             square.Status = SquareStatus.Revealed;
             squares.Add(square);
-            if (square.NeighboringBombs == 0)
+            if (square.NeighboringBombs == 0 && !square.Bomb)
             {
                 SquareNeighbors(square).ForEach(s => RevealSquares(s.Row, s.Column, squares));
             }
