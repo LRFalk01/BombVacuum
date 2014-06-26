@@ -1,67 +1,105 @@
 ﻿'use strict';
 
-cbApp.factory('SignalRGameService', ['$q', '$rootScope', function ($q, $rootScope) {
+cbApp.factory('SignalRGameService', ['$q', '$rootScope', '$timeout', '$log', function ($q, $rootScope, $timeout, $log) {
     var self = this;
 
     self.startDeferred = $q.defer();
     self.startPromise = self.startDeferred.promise;
 
     self.proxy = null;
+    self.hub = null;
   
     self.Init = function () {
         //Getting the connection object
         var connection = $.hubConnection();
+        self.hub = $.connection.gameHub;
   
         //Creating proxy
         self.proxy = connection.createHubProxy('gameHub');
   
         //Starting connection
-        self.proxy.connection.start().then(function () {
-            self.startDeferred.resolve();
+        $.connection.hub.start().done(function () {
+            $timeout(function () {
+                self.startDeferred.resolve();
+                $log.debug('connected');
+            });
         });
 
-        self.proxy.on('gamePlayers', function (players) {
-            $rootScope.$emit("game.gameplayers", players);
-        });
+        self.hub.client.gamePlayers = function (players) {
+            $timeout(function () {
+                $rootScope.$emit("game.gameplayers", players);
+                $log.debug('game.gameplayers');
+            });
+        };
 
-        self.proxy.on('currentGames', function (games) {
-            $rootScope.$emit("game.currentGames", games);
-        });
+        self.hub.client.currentGames = function (games) {
+            $timeout(function () {
+                $rootScope.$emit("game.currentGames", games);
+                $log.debug('game.currentGames');
+            });
+        };
 
-        self.proxy.on('joinServer', function () {
-            $rootScope.$emit("game.joinServer");
-        });
+        self.hub.client.joinServer = function () {
+            $timeout(function () {
+                $rootScope.$emit("game.joinServer");
+                $log.debug('game.joinServer');
+            });
+        };
 
-        self.proxy.on('createGame', function (game) {
-            $rootScope.$emit("game.createGame", game);
-        });
+        self.hub.client.createGame = function (game) {
+            $timeout(function () {
+                $rootScope.$emit("game.createGame", game);
+                $log.debug('game.createGame');
+            });
+        };
 
-        self.proxy.on('updateGameList', function (games) {
-            $rootScope.$emit("game.updateGameList", games);
-        });
+        self.hub.client.updateGameList = function (games) {
+            $timeout(function () {
+                $rootScope.$emit("game.updateGameList", games);
+                $log.debug('game.updateGameList');
+            });
+        };
 
-        self.proxy.on('reveal', function (squares) {
-            $rootScope.$emit("game.reveal", squares);
-        });
+        self.hub.client.reveal = function (squares) {
+            $timeout(function () {
+                $rootScope.$emit("game.reveal", squares);
+                $log.debug('game.reveal');
+            });
+        };
 
-        self.proxy.on('initGameBoard', function (board) {
-            $rootScope.$emit("game.initGameBoard", board);
-        });
+        self.hub.client.initGameBoard = function (board) {
+            $timeout(function () {
+                $rootScope.$emit("game.initGameBoard", board);
+                $log.debug('game.initGameBoard');
+            });
+        };
     };
   
   
     self.CurrentGames = function () {
-        self.proxy.invoke('currentGames');
+        $timeout(function () {
+            self.hub.server.currentGames();
+            $log.debug('currentGames');
+        });
     };
     self.JoinServer = function () {
-        self.proxy.invoke('joinServer');
+        $timeout(function () {
+            self.hub.server.joinServer();
+            $log.debug('joinServer');
+        });
     };
     self.ClickSquare = function (row, col) {
-        self.proxy.invoke('click', row, col);
+        $timeout(function () {
+            self.hub.server.click(row, col);
+            $log.debug('click');
+        });
     };
 
     self.CreateGame = function () {
-        self.proxy.invoke('createGame');
+        $timeout(function () {
+            self.hub.server.createGame();
+            $log.debug('createGame');
+        });
     };
 
     self.Init();

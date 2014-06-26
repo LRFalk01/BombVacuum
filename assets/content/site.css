@@ -42,16 +42,25 @@
   border-top-right-radius: 0;
 }
 
+.gameBoard {
+    background-color: #C0C0C0;
+    color: black;
+}
+
 .gameBoard td {
-    border: 1px lightblue solid;
+    border: 1px gray solid;
     height: 25px;width: 25px;
     text-align: center;
+    padding: 0;
 }
 
 .gameBoard td div {
     height: 25px;width: 25px;
 }
 
-.gameBoard td div.unknown {
-    border: 3px lightblue outset;
+.gameBoard td div.GameSquare.unknown {
+    border: 2px #C0C0C0 outset;
+}
+.gameBoard td div.GameSquare.unknown:active {
+    border: 2px #C0C0C0 inset;
 }
