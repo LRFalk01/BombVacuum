@@ -127,7 +127,17 @@ namespace BombVacuum.Models.Game
             if (String.IsNullOrWhiteSpace(player.Group)) return null;
             if (!_games.ContainsKey(player.Group)) return null;
             var game = _games[player.Group];
-            return game.Click(row, col);
+            return game.Board.Reveal(row, col);
+        }
+
+        public Square FlagSquare(byte row, byte col, string userId)
+        {
+            if (!_players.ContainsKey(userId)) return null;
+            var player = _players[userId];
+            if (String.IsNullOrWhiteSpace(player.Group)) return null;
+            if (!_games.ContainsKey(player.Group)) return null;
+            var game = _games[player.Group];
+            return game.Board.Flag(row, col);
         } 
     }
 }

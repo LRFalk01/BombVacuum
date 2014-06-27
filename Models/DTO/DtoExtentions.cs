@@ -35,8 +35,12 @@ namespace BombVacuum.Models.DTO
             if (square == null) return null;
             return new SquareDTO
             {
-                Bomb = square.IsBomb, Column = square.Column, Row = square.Row, State = square.State, NeighboringBombs = square.State == SquareState.Unknown ? new int?() : square.NeighboringBombs
-            
+                Bomb = square.IsBomb,
+                Column = square.Column,
+                Row = square.Row,
+                State = square.State,
+                NeighboringBombs = square.State == SquareState.Unknown ? new int?() : square.NeighboringBombs,
+                Flag = square.FlagStatus
             };
         }
 

@@ -66,6 +66,14 @@ namespace BombVacuum.SignalR.Hubs
             Clients.Group(player.Group).reveal(squares.ToDto());
         }
 
+        public void Flag(byte row, byte col)
+        {
+            var player = GameState.Instance.GetPlayer(Context.User.Identity.Name);
+            if (String.IsNullOrWhiteSpace(player.Group)) return;
+            var square = GameState.Instance.FlagSquare(row, col, player.UserId);
+            Clients.Group(player.Group).flag(square.ToDto());
+        }
+
         public override Task OnDisconnected()
         {
             GameState.Instance.PlayerLeave(Context.User.Identity.GetUserId());

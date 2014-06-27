@@ -55,13 +55,22 @@ cbApp.factory('SignalRGameService', ['$q', '$rootScope', '$log', function ($q, $
                 boardSquare.State = square.State;
             });
             $rootScope.$apply();
-                $log.debug('game.reveal');
+            $log.debug('game.reveal');
+        };
+
+        self.hub.client.flag = function (square) {
+            if (!square || !angular.isObject(square)) return;
+            var boardSquare = self.base.gameBoard.Squares[square.Row][square.Column];
+
+            boardSquare.Flag = square.Flag;
+            $rootScope.$apply();
+            $log.debug('game.flag');
         };
 
         self.hub.client.initGameBoard = function (board) {
             angular.copy(board, self.base.gameBoard);
             $rootScope.$apply();
-                $log.debug('game.initGameBoard');
+            $log.debug('game.initGameBoard');
         };
 
         //Starting connection
@@ -74,21 +83,25 @@ cbApp.factory('SignalRGameService', ['$q', '$rootScope', '$log', function ($q, $
     };
   
     self.CurrentGames = function () {
-            self.hub.server.currentGames();
-            $log.debug('currentGames');
+        self.hub.server.currentGames();
+        $log.debug('currentGames');
     };
     self.JoinServer = function () {
-            self.hub.server.joinServer();
-            $log.debug('joinServer');
+        self.hub.server.joinServer();
+        $log.debug('joinServer');
     };
     self.ClickSquare = function (row, col) {
-            self.hub.server.click(row, col);
-            $log.debug('click');
+        self.hub.server.click(row, col);
+        $log.debug('click');
+    };
+    self.FlagSquare = function (row, col) {
+        self.hub.server.flag(row, col);
+        $log.debug('flag');
     };
 
     self.CreateGame = function () {
-            self.hub.server.createGame();
-            $log.debug('createGame');
+        self.hub.server.createGame();
+        $log.debug('createGame');
     };
 
     self.Init();
@@ -102,6 +115,7 @@ cbApp.factory('SignalRGameService', ['$q', '$rootScope', '$log', function ($q, $
 
         CurrentGames: self.CurrentGames,
         ClickSquare: self.ClickSquare,
+        FlagSquare: self.FlagSquare,
         CreateGame: self.CreateGame
     }; 
 }]);

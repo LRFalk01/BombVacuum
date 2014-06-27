@@ -11,4 +11,6 @@
         <span style="color: black; font-weight: bold;" ng-switch-when="8">8</span>
     </div>
     <div ng-show="ngModel.State == 1 && ngModel.Bomb"><i style="color: red;" class="fa fa-bomb"></i></div>
+    <div ng-show="ngModel.State == 0 && ngModel.Flag == 1"><i style="color: black;" class="fa fa-flag"></i></div>
+    <div ng-show="ngModel.State == 0 && ngModel.Flag == 2"><i style="color: black;" class="fa fa-question"></i></div>
 </div>

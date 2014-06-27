@@ -1,4 +1,6 @@
-﻿namespace BombVacuum.Models.Game
+﻿using System;
+
+namespace BombVacuum.Models.Game
 {
     public class Square
     {
@@ -12,6 +14,7 @@
         public byte Column { get; private set; }
         public byte Row { get; private set; }
         public SquareState State { get; set; }
+        public FlagStatus FlagStatus { get; set; }
 
         internal bool Bomb;
         public bool? IsBomb
@@ -33,11 +36,10 @@
         Revealed = 1
     }
 
-    public enum SquareStatus
+    public enum FlagStatus
     {
-        Default = 0,
+        Unflagged = 0,
         Flagged = 1,
-        Question = 2,
-        Safe = 3
+        Question = 2
     }
 }

@@ -24,7 +24,7 @@ cbApp.directive('bvGameSquare', ['SignalRGameService', function (SignalRGameServ
             element.bind('contextmenu', function(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                //todo flag square
+                SignalRGameService.FlagSquare(scope.ngModel.Row, scope.ngModel.Column);
             });
         }
     }

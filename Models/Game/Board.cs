@@ -22,7 +22,27 @@ namespace BombVacuum.Models.Game
         public byte Rows { get; private set; }
         public byte Columns { get; private set; }
         public int Bombs { get; private set; }
+        public int Flagged { get; internal set; }
         public List<Square> Squares { get; private set; }
+
+        public Square Flag(byte row, byte column)
+        {
+            var square = Squares.FirstOrDefault(s => s.Row == row && s.Column == column);
+            if (square == null) return null;
+            switch (square.FlagStatus)
+            {
+                case FlagStatus.Unflagged:
+                    square.FlagStatus = FlagStatus.Flagged;
+                    break;
+                case FlagStatus.Flagged:
+                    square.FlagStatus = FlagStatus.Question;
+                    break;
+                default:
+                    square.FlagStatus = FlagStatus.Unflagged;
+                    break;
+            }
+            return square;
+        }
 
         public List<Square> Reveal(byte row, byte column)
         {
@@ -42,7 +62,7 @@ namespace BombVacuum.Models.Game
         {
             if(squares == null) squares = new List<Square>();
             var square = Squares.First(s => s.Row == row && s.Column == column);
-            if (square.State != SquareState.Unknown) return squares;
+            if (square.State != SquareState.Unknown || square.FlagStatus != FlagStatus.Unflagged) return squares;
             square.State = SquareState.Revealed;
             squares.Add(square);
             if (square.NeighboringBombs == 0 && !square.Bomb)
@@ -74,11 +94,11 @@ namespace BombVacuum.Models.Game
                 var numBombs = 0;
                 while (numBombs < Bombs)
                 {
-                    var row = _random.Next(Rows - 1);
-                    var col = _random.Next(Columns - 1);
+                    var row = _random.Next(Rows);
+                    var col = _random.Next(Columns);
 
                     //bomb cannot be first clicked square
-                    if (startRow == row && startCol == col) continue;
+                    if (startRow == row && startCol == col || Squares.First(x => x.Row == row && x.Column == col).Bomb) continue;
                     numBombs = numBombs + 1;
                     Squares.First(s => s.Row == row && s.Column == col).IsBomb = true;
                 }

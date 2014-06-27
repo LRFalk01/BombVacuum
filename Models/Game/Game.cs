@@ -23,6 +23,5 @@ namespace BombVacuum.Models.Game
         {
             return Board.Reveal(row, column);
         }
-
     }
 }
