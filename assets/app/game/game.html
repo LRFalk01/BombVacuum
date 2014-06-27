@@ -1,16 +1,16 @@
 ﻿
-<table class="gameBoard nohighlight" ng-if="gameBoard">
-    <tr ng-repeat="row in Range(gameBoard.Rows) track by $index" ng-init="Row = $index">
-        <td ng-repeat="col in Range(gameBoard.Columns) track by $index" ng-init="Col = $index">
-            <div bv-game-square ng-model="gameBoard.Squares[Row][Col]"></div>
+<table class="gameBoard nohighlight" ng-show="SignalRGameService.gameBoard.Rows">
+    <tr ng-repeat="row in Range(SignalRGameService.gameBoard.Rows) track by $index" ng-init="Row = $index">
+        <td ng-repeat="col in Range(SignalRGameService.gameBoard.Columns) track by $index" ng-init="Col = $index">
+            <div bv-game-square ng-model="SignalRGameService.gameBoard.Squares[Row][Col]"></div>
         </td>
     </tr>
 </table>
-<button ng-click="CreateGame()">CreateGame</button><br />
-Game: {{currentGame | json}}<br />
-Games: {{currentGames | json}}<br />
-Players: {{gamePlayers | json}}<br />
+<button cg-busy="SignalRGameService.initialized" ng-click="CreateGame()">CreateGame</button><br />
+Game: {{SignalRGameService.currentGame | json}}<br />
+Games: {{SignalRGameService.currentGames | json}}<br />
+Players: {{SignalRGameService.gamePlayers | json}}<br />
 <br />
 Row: <input ng-model="row" /> Col: <input ng-model="col" />
 <button ng-click="Click()">Click</button><br />
-Revaled Squares: {{gameBoard | json}}<br />
+Revaled Squares: {{SignalRGameService.gameBoard | json}}<br />

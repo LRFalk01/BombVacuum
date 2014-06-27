@@ -1,112 +1,106 @@
 ﻿'use strict';
 
-cbApp.factory('SignalRGameService', ['$q', '$rootScope', '$timeout', '$log', function ($q, $rootScope, $timeout, $log) {
+cbApp.factory('SignalRGameService', ['$q', '$rootScope', '$log', function ($q, $rootScope, $log) {
     var self = this;
-
+    self.base = {};
+    
     self.startDeferred = $q.defer();
-    self.startPromise = self.startDeferred.promise;
+    self.base.initialized = self.startDeferred.promise;
+    self.base.currentGames = [];
+    self.base.currentGame = {};
+    self.base.gameBoard = {};
 
-    self.proxy = null;
+    self.base.gamePlayers = [];
+
     self.hub = null;
   
     self.Init = function () {
-        //Getting the connection object
-        var connection = $.hubConnection();
         self.hub = $.connection.gameHub;
   
-        //Creating proxy
-        self.proxy = connection.createHubProxy('gameHub');
-  
-        //Starting connection
-        $.connection.hub.start().done(function () {
-            $timeout(function () {
-                self.startDeferred.resolve();
-                $log.debug('connected');
-            });
-        });
-
         self.hub.client.gamePlayers = function (players) {
-            $timeout(function () {
-                $rootScope.$emit("game.gameplayers", players);
-                $log.debug('game.gameplayers');
-            });
+            angular.copy(players, self.base.gamePlayers);
+            $rootScope.$apply();
+            $log.debug('game.gameplayers');
         };
 
         self.hub.client.currentGames = function (games) {
-            $timeout(function () {
-                $rootScope.$emit("game.currentGames", games);
-                $log.debug('game.currentGames');
-            });
+            angular.copy(games, self.base.currentGames);
+            $rootScope.$apply();
+            $log.debug('game.currentGames');
         };
 
         self.hub.client.joinServer = function () {
-            $timeout(function () {
-                $rootScope.$emit("game.joinServer");
-                $log.debug('game.joinServer');
-            });
+            $log.debug('game.joinServer');
         };
 
         self.hub.client.createGame = function (game) {
-            $timeout(function () {
-                $rootScope.$emit("game.createGame", game);
-                $log.debug('game.createGame');
-            });
+            angular.copy(game, self.base.currentGame);
+            $rootScope.$apply();
+            $log.debug('game.createGame');
         };
 
         self.hub.client.updateGameList = function (games) {
-            $timeout(function () {
-                $rootScope.$emit("game.updateGameList", games);
+            angular.copy(games, self.base.currentGames);
+            $rootScope.$apply();
                 $log.debug('game.updateGameList');
-            });
         };
 
         self.hub.client.reveal = function (squares) {
-            $timeout(function () {
-                $rootScope.$emit("game.reveal", squares);
-                $log.debug('game.reveal');
+            if (!squares || !angular.isArray(squares)) return;
+            angular.forEach(squares, function (square) {
+                var boardSquare = self.base.gameBoard.Squares[square.Row][square.Column];
+
+                boardSquare.Bomb = square.Bomb;
+                boardSquare.NeighboringBombs = square.NeighboringBombs;
+                boardSquare.Status = square.Status;
             });
+            $rootScope.$apply();
+                $log.debug('game.reveal');
         };
 
         self.hub.client.initGameBoard = function (board) {
-            $timeout(function () {
-                $rootScope.$emit("game.initGameBoard", board);
+            angular.copy(board, self.base.gameBoard);
+            $rootScope.$apply();
                 $log.debug('game.initGameBoard');
-            });
         };
+
+        //Starting connection
+        $.connection.hub.start().done(function () {
+            self.startDeferred.resolve();
+            //self.JoinServer();
+            $rootScope.$apply();
+            $log.debug('connected');
+        });
     };
-  
   
     self.CurrentGames = function () {
-        $timeout(function () {
             self.hub.server.currentGames();
             $log.debug('currentGames');
-        });
     };
     self.JoinServer = function () {
-        $timeout(function () {
             self.hub.server.joinServer();
             $log.debug('joinServer');
-        });
     };
     self.ClickSquare = function (row, col) {
-        $timeout(function () {
             self.hub.server.click(row, col);
             $log.debug('click');
-        });
     };
 
     self.CreateGame = function () {
-        $timeout(function () {
             self.hub.server.createGame();
             $log.debug('createGame');
-        });
     };
 
     self.Init();
     return {
         initialized: self.startPromise,
+
+        currentGames: self.base.currentGames,
+        currentGame: self.base.currentGame,
+        gamePlayers: self.base.gamePlayers,
+        gameBoard: self.base.gameBoard,
+
         CurrentGames: self.CurrentGames,
-        JoinServer: self.JoinServer,
         ClickSquare: self.ClickSquare,
         CreateGame: self.CreateGame
     }; 

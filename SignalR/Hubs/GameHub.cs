@@ -71,5 +71,13 @@ namespace BombVacuum.SignalR.Hubs
             GameState.Instance.PlayerLeave(Context.User.Identity.GetUserId());
             return base.OnDisconnected();
         }
+
+        public override Task OnConnected()
+        {
+            var player = GameState.Instance.PlayerJoin(Context.User.Identity.Name, Context.User.Identity.GetUserId());
+            player.ConnectionId = Context.ConnectionId;
+            Clients.Caller.joinServer();
+            return base.OnConnected();
+        }
     }
 }
