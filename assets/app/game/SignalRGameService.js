@@ -104,9 +104,16 @@ cbApp.factory('SignalRGameService', ['$q', '$rootScope', '$log', function ($q, $
         $log.debug('createGame');
     };
 
+    self.JoinGame = function (gameId) {
+        self.hub.server.joinGame(gameId);
+        $log.debug('joinGame');
+    };
+
+
+
     self.Init();
     return {
-        initialized: self.startPromise,
+        initialized: self.base.initialized,
 
         currentGames: self.base.currentGames,
         currentGame: self.base.currentGame,
@@ -116,6 +123,7 @@ cbApp.factory('SignalRGameService', ['$q', '$rootScope', '$log', function ($q, $
         CurrentGames: self.CurrentGames,
         ClickSquare: self.ClickSquare,
         FlagSquare: self.FlagSquare,
-        CreateGame: self.CreateGame
+        CreateGame: self.CreateGame,
+        JoinGame: self.JoinGame
     }; 
 }]);

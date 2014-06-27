@@ -1,12 +1,23 @@
-﻿
-<table class="gameBoard nohighlight" ng-show="SignalRGameService.gameBoard.Rows">
-    <tr ng-repeat="row in Range(SignalRGameService.gameBoard.Rows) track by $index" ng-init="Row = $index">
-        <td ng-repeat="col in Range(SignalRGameService.gameBoard.Columns) track by $index" ng-init="Col = $index">
-            <div bv-game-square ng-model="SignalRGameService.gameBoard.Squares[Row][Col]"></div>
-        </td>
-    </tr>
-</table>
-<button cg-busy="SignalRGameService.initialized" ng-click="CreateGame()">CreateGame</button><br />
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <button cg-busy="SignalRGameService.initialized" ng-click="CreateGame()">CreateGame</button><br />
+            <ul>
+                <li ng-repeat="game in SignalRGameService.currentGames" ng-click="SignalRGameService.JoinGame(game.Id)">{{game.Id}}</li>
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <table class="gameBoard nohighlight" ng-show="SignalRGameService.gameBoard.Rows">
+                <tr ng-repeat="row in Range(SignalRGameService.gameBoard.Rows) track by $index" ng-init="Row = $index">
+                    <td ng-repeat="col in Range(SignalRGameService.gameBoard.Columns) track by $index" ng-init="Col = $index">
+                        <div bv-game-square ng-model="SignalRGameService.gameBoard.Squares[Row][Col]"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
 Game: {{SignalRGameService.currentGame | json}}<br />
 Games: {{SignalRGameService.currentGames | json}}<br />
 Players: {{SignalRGameService.gamePlayers | json}}<br />

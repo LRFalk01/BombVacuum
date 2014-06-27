@@ -14,6 +14,9 @@ cbApp.controller('GameController', ['$scope', '$log', 'SignalRGameService',
         };
 
         self.Init = function () {
+            SignalRGameService.initialized.then(function() {
+                SignalRGameService.CurrentGames();
+            });
         };
         self.Init();
     }]

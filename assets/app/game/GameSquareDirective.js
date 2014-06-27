@@ -22,9 +22,9 @@ cbApp.directive('bvGameSquare', ['SignalRGameService', function (SignalRGameServ
             };
 
             element.bind('contextmenu', function(event) {
+                SignalRGameService.FlagSquare(scope.ngModel.Row, scope.ngModel.Column);
                 event.preventDefault();
                 event.stopPropagation();
-                SignalRGameService.FlagSquare(scope.ngModel.Row, scope.ngModel.Column);
             });
         }
     }

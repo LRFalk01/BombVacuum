@@ -65,6 +65,8 @@ namespace BombVacuum.Models.Game
             if (!_games.ContainsKey(gameId) || !_players.ContainsKey(userId)) return null;
             var game = _games[gameId];
             var player = _players[userId];
+
+            if (player.Group == game.Id) return game;
             if (!String.IsNullOrWhiteSpace(player.Group)) LeaveGame(userId, player.Group);
             Groups.Add(player.ConnectionId, game.Id);
             game.Players.Add(player);
@@ -80,6 +82,7 @@ namespace BombVacuum.Models.Game
             if (!_players.ContainsKey(userId)) return null;
             var player = _players[userId];
             if (player.Group != groupId) return null;
+            if (!_games.ContainsKey(groupId)) return null;
 
             var game = _games[groupId];
             game.Players.Remove(player);
