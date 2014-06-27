@@ -52,7 +52,7 @@ cbApp.factory('SignalRGameService', ['$q', '$rootScope', '$log', function ($q, $
 
                 boardSquare.Bomb = square.Bomb;
                 boardSquare.NeighboringBombs = square.NeighboringBombs;
-                boardSquare.Status = square.Status;
+                boardSquare.State = square.State;
             });
             $rootScope.$apply();
                 $log.debug('game.reveal');

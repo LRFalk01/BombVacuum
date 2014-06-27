@@ -6,19 +6,19 @@
         {
             Column = column;
             Row = row;
-            Status = SquareStatus.Unknown;
+            State = SquareState.Unknown;
         }
 
         public byte Column { get; private set; }
         public byte Row { get; private set; }
-        public SquareStatus Status { get; set; }
+        public SquareState State { get; set; }
 
         internal bool Bomb;
         public bool? IsBomb
         {
             get
             {
-                if (Status == SquareStatus.Unknown) return null;
+                if (State == SquareState.Unknown) return null;
                 return Bomb;
             }
             internal set { Bomb = value ?? false; }
@@ -27,10 +27,17 @@
         public int NeighboringBombs { get; internal set; }
     }
 
-    public enum SquareStatus
+    public enum SquareState
     {
         Unknown = 0,
+        Revealed = 1
+    }
+
+    public enum SquareStatus
+    {
+        Default = 0,
         Flagged = 1,
-        Revealed = 2
+        Question = 2,
+        Safe = 3
     }
 }

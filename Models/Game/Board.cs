@@ -33,7 +33,7 @@ namespace BombVacuum.Models.Game
             if(square == null) return new List<Square>();
             lock (Squares)
             {
-                if (square.Status != SquareStatus.Unknown) return null;
+                if (square.State != SquareState.Unknown) return null;
                 return RevealSquares(row, column, null);
             }
         }
@@ -42,8 +42,8 @@ namespace BombVacuum.Models.Game
         {
             if(squares == null) squares = new List<Square>();
             var square = Squares.First(s => s.Row == row && s.Column == column);
-            if (square.Status != SquareStatus.Unknown) return squares;
-            square.Status = SquareStatus.Revealed;
+            if (square.State != SquareState.Unknown) return squares;
+            square.State = SquareState.Revealed;
             squares.Add(square);
             if (square.NeighboringBombs == 0 && !square.Bomb)
             {

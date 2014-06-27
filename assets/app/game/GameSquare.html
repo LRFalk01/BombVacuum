@@ -1,5 +1,5 @@
-﻿<div class="GameSquare" ng-class="{unknown: ngModel.Status == 0}" ng-click="Click()">
-    <div ng-show="ngModel.Status == 2 && !ngModel.Bomb" ng-switch="ngModel.NeighboringBombs">
+﻿<div class="GameSquare" ng-class="{unknown: ngModel.State == 0}" ng-click="Click()">
+    <div ng-show="ngModel.State == 1 && !ngModel.Bomb" ng-switch="ngModel.NeighboringBombs">
         <span ng-switch-when="0"></span>
         <span style="color: blue; font-weight: bold;" ng-switch-when="1">1</span>
         <span style="color: #098309; font-weight: bold;" ng-switch-when="2">2</span>
@@ -10,5 +10,5 @@
         <span style="color: #780078; font-weight: bold;" ng-switch-when="7">7</span>
         <span style="color: black; font-weight: bold;" ng-switch-when="8">8</span>
     </div>
-    <div ng-show="ngModel.Status == 2 && ngModel.Bomb"><i style="color: red;" class="fa fa-bomb"></i></div>
+    <div ng-show="ngModel.State == 1 && ngModel.Bomb"><i style="color: red;" class="fa fa-bomb"></i></div>
 </div>

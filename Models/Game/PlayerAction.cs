@@ -7,7 +7,7 @@ namespace BombVacuum.Models.Game
         public byte Row { get; set; }
         public byte Column { get; set; }
         public ActionType ActionType { get; set; }
-        public SquareStatus ActionResult { get; set; }
+        public SquareState ActionResult { get; set; }
         public DateTime ActionTime { get; set; }
     }
 

@@ -9,9 +9,9 @@ cbApp.directive('bvGameSquare', ['SignalRGameService', function (SignalRGameServ
         },
         templateUrl: 'assets/app/game/GameSquare.html',
         link: function(scope, element, attrs, ngModelCtrl) {
-            scope.SquareStatus = function() {
-                if (scope.ngModel.Status == undefined) return '';
-                if (scope.ngModel.Status == 0) return '?';
+            scope.SquareState = function() {
+                if (scope.ngModel.State == undefined) return '';
+                if (scope.ngModel.State == 0) return '?';
                 if (scope.ngModel.Bomb) return 'B';
                 if (scope.ngModel.NeighboringBombs == 0) return '';
                 return scope.ngModel.NeighboringBombs;

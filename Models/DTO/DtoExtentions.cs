@@ -35,7 +35,7 @@ namespace BombVacuum.Models.DTO
             if (square == null) return null;
             return new SquareDTO
             {
-                Bomb = square.IsBomb, Column = square.Column, Row = square.Row, Status = square.Status, NeighboringBombs = square.Status == SquareStatus.Unknown ? new int?() : square.NeighboringBombs
+                Bomb = square.IsBomb, Column = square.Column, Row = square.Row, State = square.State, NeighboringBombs = square.State == SquareState.Unknown ? new int?() : square.NeighboringBombs
             
             };
         }
@@ -49,7 +49,7 @@ namespace BombVacuum.Models.DTO
         public static BoardDTO ToDto(this Board board)
         {
             if (board == null) return null;
-            return new BoardDTO(board.Squares);
+            return new BoardDTO(board.Bombs, board.Squares);
         }
 
         public static List<BoardDTO> ToDto(this IEnumerable<Board> boards)

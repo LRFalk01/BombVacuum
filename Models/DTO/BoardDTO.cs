@@ -7,11 +7,11 @@ namespace BombVacuum.Models.DTO
 {
     public class BoardDTO
     {
-        public BoardDTO(ICollection<Square> squares)
+        public BoardDTO(int bombs, ICollection<Square> squares)
         {
             Rows = (byte)(squares.Max(s => s.Row) + 1);
             Columns = (byte)(squares.Max(s => s.Column) + 1);
-            Bombs = squares.Count(s => s.Bomb);
+            Bombs = bombs;
             Squares = new SquareDTO[Rows,Columns];
 
             for (byte row = 0; row < Rows; row++)
